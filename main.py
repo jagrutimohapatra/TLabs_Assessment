@@ -1,68 +1,58 @@
-# define a function to traverse the matrix
+import numpy as np
 
-def traverseGrid(i, j, grid, time):
-	r = len(grid)
-	c = len(grid[0])
-	# position visited
-	grid[i][j] = 0
+#traverse the hospital from 1 ward to another in only 4 directions up, down, left, right
+def infect_hospital(hospital):
+    row = len(hospital) 
+    col = len(hospital[0])
+    
+    infection_map = [[0 for _ in range(col)] for _ in range(row)] #define the infection map to traverse
+    
+    #traversing in the directions up (-1,0), down (1,0), left (0,-1), right (0,1)
+    for i in range(row):
+        for j in range(col):
+            if hospital[i][j] == 2:            
+                infection_map[i][j] = 2
+                
+                if hospital[i][min(j+1, col-1)] != 0:
+                    infection_map[i][min(j+1, col-1)] = 2
+                
+                if hospital[i][max(j-1, 0)] != 0:
+                    infection_map[i][max(j-1, 0)] = 2
+                
+                if hospital[max(i-1,0)][j] != 0:                               
+                    infection_map[max(i-1,0)][j] = 2
+                
+                if hospital[min(i+1,row-1)][j] != 0:
+                    infection_map[min(i+1,row-1)][j] = 2
+             
+    propogation = np.maximum(hospital,infection_map).tolist() #after a round of infection, how the matrix looks like
+    
+    # print("Hospital\n{}\nPropogation\n{}\n".format(np.matrix(hospital),np.matrix(propogation)))
+    
+    return propogation
 
-# create a queue (list) to store all the positions of infected wards in 1 unit time
-	infection_queue = []
-
-# direction arrays, only up,down,right,left allowed
-	row = [-1, 0, 0, 1]
-	col = [0, -1, 1, 0]
-
-# traversal to adjacent wards
-	for k in range(4):
-		m = i+row[k]
-		n = j+col[k]
-
-		if m >= 0 and m < r and n >= 0 and n < c and grid[m][n] == 1:
-			grid[m][n] = 0
-			infection_queue.append((m, n)) #queue updated
-
-# store time at which the ward got infected
-			time[m][n] = time[i][j]+1
-
-	return infection_queue
-
-
-# define a function to calculate minimum time to infect all possible wards
 def minTime(hospital):
-	r = len(hospital)
-	c = len(hospital[0])
+  rounds = 0 #rounds = each unit of time, in other words each round of propagation
 
-	# array to store the time at which the wards got infected
-	time = [[0 for i in range(c)] for j in range(r)]
+  while True:
+    rounds = rounds+1
+    print("\n\nRound{}".format(rounds))
+    infected_hospital_iter = infect_hospital(hospital)
+    #we break propagation when we cannot change the matrix anymore, i.e, no more new 2s can be formed
+    if infected_hospital_iter == hospital: 
+      print("No more propagation possible, breaking the loop")
+      break
+    else: #continue with propagation
+      hospital = infected_hospital_iter.copy()
 
-# initialise queue to store newly infected wards
-	inf_q = []
+  row = len(hospital)
+  col = len(hospital[0])
 
-# initial run
-	for i in range(r):
-		for j in range(c):
-			if hospital[i][j] == 2:
-				inf_q += traverseGrid(i, j, hospital, time)
-
-# we need to iterate till all wards that can be possibly infected are infected
-	while(len(inf_q) != 0):
-		for x, y in inf_q:
-			temp = traverseGrid(x, y, hospital, time)
-		inf_q = temp
-
-# calculate minimum time to infect all possible wards
-	res = 0
-	for i in range(r):
-		for j in range(c):
-
-			# check if there is any uninfected ward
-			if hospital[i][j] == 1:
-				return '-1'
-			res = max(res, time[i][j])
-			result = str(res) #time complexity = O(M*N)
-
-            
-
-	return result
+  for i in range(row):
+    for j in range(col):
+      if hospital[i][j] == 1:
+        return '-1'
+      res = rounds-1
+      result = str(res)
+  return result
 
