@@ -10,6 +10,7 @@ Then we traverse to nearby wards in these directions, If the value at cell (i, j
 Once all the infected wards are visited, i.e. the time of infection of all the infected wards is non-negative, then we calculate the time to infect all wards possibly. If any ward remains uninfected then we output result as '-1'.
 
 To run the code:
-1. Download the whole folder
-2. Open terminal and navigate to the folder (give the path to where you have downloaded the folder with its files and stored in your local)
-3. Run the test file with the command : python test_main.py 
+1. Download the whole folder using the command:  git clone https://github.com/jagrutimohapatra/TLabs_Assessment.git
+2. Open terminal and navigate to the folder (give the path to where you have downloaded the folder with its files and stored in your local) for example you have cloned in the root folder and to navigate to the TLabs_Assessment file just use the command: cd TLabs_Assessment/
+3. Check if all the files have been downloaded i.e., main.py, README.md and test_main.py
+4. Run the test file with the command : python test_main.py, you can see the tests have passed
