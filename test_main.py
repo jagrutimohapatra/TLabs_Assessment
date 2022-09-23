@@ -15,6 +15,14 @@ class TestMain(unittest.TestCase):
     grid2 = [[2,1,0,2,1],[1,1,1,1,1],[0,1,0,2,1]]
     result2 = main.minTime(grid2)
     self.assertEqual(result2,'3')
+    
+    grid3 = [[0,0,0], [0,2,0], [0,0,1]]
+    result3 = main.minTime(grid3)
+    self.assertEqual(result3,'-1')
+    
+    grid4 = [[0,0,0], [0,2,0], [0,0,2]]
+    result4 = main.minTime(grid4)
+    self.assertEqual(result4,'0')
 
 if __name__ == '__main__':
   unittest.main()
