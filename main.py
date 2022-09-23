@@ -50,7 +50,7 @@ def minTime(hospital):
 
   for i in range(row):
     for j in range(col):
-      if hospital[i][j] == 1:
+      if hospital[i][j] == 1: #in the final matrix after propagation cannot go on, if we encounter a 1 then return '-1'
         return '-1'
       res = rounds-1
       result = str(res)
